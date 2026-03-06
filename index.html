@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kevin O'Hara — UX & Product Designer. Keeping things simple. And fun." />
   <title>Kevin O'Hara — UX & Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -209,6 +210,25 @@
       color: var(--muted);
       letter-spacing: 0.03em;
     }
+
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .card {
+    padding: 40px 28px 28px;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  .name {
+    font-size: 28px;
+  }
+}
   </style>
 </head>
 <body>
