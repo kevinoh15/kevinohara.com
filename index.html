@@ -7,7 +7,15 @@
   <title>Kevin O'Hara | UX & Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <!-- Async font load to avoid render-blocking -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap"
+        media="print"
+        onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" />
+  </noscript>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -20,7 +28,7 @@
       --surface: #16181c;
       --border: rgba(255,255,255,0.07);
       --text: #e8e6e2;
-      --muted: #7a7772;
+      --muted: #8a8580;
       --accent: #c8b89a;
       --hover-bg: rgba(200,184,154,0.07);
       --link-hover: #e8d9c1;
@@ -41,6 +49,19 @@
       justify-content: center;
       padding: 2rem 1rem;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Visually hidden utility for screen-reader-only text */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .card {
@@ -82,6 +103,7 @@
       border-radius: 50%;
       background: conic-gradient(from 0deg, var(--accent), transparent 60%, var(--accent));
       animation: spin 8s linear infinite;
+      will-change: transform;
     }
 
     .avatar-ring::after {
@@ -137,6 +159,11 @@
       gap: 0.75rem;
     }
 
+    /* Remove outline on programmatic focus (skip link target) */
+    .links:focus {
+      outline: none;
+    }
+
     .link-item {
       display: flex;
       align-items: center;
@@ -149,6 +176,7 @@
       color: var(--text);
       transition: background 0.2s, border-color 0.2s, transform 0.2s;
       animation: fadeUp 0.6s ease both;
+      will-change: transform;
     }
 
     .link-item:nth-child(1) { animation-delay: 0.1s; }
@@ -211,7 +239,7 @@
     .footer {
       margin-top: 2rem;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       color: var(--muted);
       letter-spacing: 0.05em;
     }
@@ -220,10 +248,18 @@
       body { padding: 1.5rem 0.75rem; }
     }
 
+    @media (max-width: 280px) {
+      .link-item { padding: 0.85rem 1rem; }
+      .icon-wrap { width: 36px; height: 36px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
+      .avatar-ring,
+      .card,
+      .link-item {
+        animation: none;
+      }
       *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
       html { scroll-behavior: auto; }
@@ -249,50 +285,67 @@
 <body>
   <a href="#links" class="skip-link">Skip to links</a>
 
-  <div class="card">
-    <div class="profile">
+  <main class="card">
+    <header class="profile">
       <div class="avatar-wrap">
-        <div class="avatar-ring"></div>
-        <img src="assets/kevin-ohara-profile-gemini.PNG" alt="Kevin O'Hara" class="avatar" />
+        <div class="avatar-ring" aria-hidden="true"></div>
+        <img
+          src="assets/kevin-ohara-profile-192.png"
+          alt="Kevin O'Hara"
+          class="avatar"
+          width="96"
+          height="96"
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
       <h1 class="name">Kevin O'Hara</h1>
       <p class="tagline">UX &amp; Product Design</p>
       <p class="bio">I design things people love to use.</p>
-    </div>
+    </header>
 
-    <div class="links" id="links">
-      <a href="https://www.instagram.com/kevinoh15" class="link-item" target="_blank" rel="noopener">
-        <div class="icon-wrap">
+    <div class="links" id="links" tabindex="-1">
+      <a href="https://www.instagram.com/kevinoh15" class="link-item"
+         target="_blank" rel="noopener"
+         aria-label="Instagram (opens in new tab)">
+        <span class="icon-wrap">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-        </div>
-        <span class="link-label">Instagram</span>
-        <span class="link-arrow">→</span>
+        </span>
+        <span class="link-label" aria-hidden="true">Instagram</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://www.facebook.com/kevin.ohara.15" class="link-item" target="_blank" rel="noopener">
-        <div class="icon-wrap">
+      <a href="https://www.facebook.com/kevin.ohara.15" class="link-item"
+         target="_blank" rel="noopener"
+         aria-label="Facebook (opens in new tab)">
+        <span class="icon-wrap">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </div>
-        <span class="link-label">Facebook</span>
-        <span class="link-arrow">→</span>
+        </span>
+        <span class="link-label" aria-hidden="true">Facebook</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="https://www.linkedin.com/in/kevinoh15/" class="link-item" target="_blank" rel="noopener">
-        <div class="icon-wrap">
+      <a href="https://www.linkedin.com/in/kevinoh15/" class="link-item"
+         target="_blank" rel="noopener"
+         aria-label="LinkedIn (opens in new tab)">
+        <span class="icon-wrap">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </div>
-        <span class="link-label">LinkedIn</span>
-        <span class="link-arrow">→</span>
+        </span>
+        <span class="link-label" aria-hidden="true">LinkedIn</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
       </a>
-      <a href="mailto:kevinoh15@gmail.com" class="link-item">
-        <div class="icon-wrap">
+      <a href="mailto:kevinoh15@gmail.com" class="link-item"
+         aria-label="Send email to Kevin O'Hara">
+        <span class="icon-wrap">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </div>
-        <span class="link-label">Email</span>
-        <span class="link-arrow">→</span>
+        </span>
+        <span class="link-label" aria-hidden="true">Email</span>
+        <span class="link-arrow" aria-hidden="true">→</span>
       </a>
     </div>
 
-    <div class="footer">© Kevin O'Hara <span id="yr"></span></div>
-  </div>
+    <footer class="footer">
+      &copy; Kevin O'Hara <time id="yr"></time>
+    </footer>
+  </main>
 
   <script type="application/ld+json">
   {
@@ -308,6 +361,11 @@
     ]
   }
   </script>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+  <script>
+    const yr = new Date().getFullYear();
+    const el = document.getElementById('yr');
+    el.textContent = yr;
+    el.setAttribute('datetime', String(yr));
+  </script>
 </body>
 </html>
