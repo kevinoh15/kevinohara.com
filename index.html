@@ -59,7 +59,6 @@
       flex-direction: column;
       align-items: center;
       gap: 0;
-      perspective: 600px;
 
       /* entry animation */
       opacity: 0;
@@ -252,14 +251,14 @@
 </head>
 <body>
   <main class="page">
-    <div class="card" id="card">
-      <div class="photo-wrap" id="photoWrap">
+    <div class="card">
+      <div class="photo-wrap">
         <div class="photo-inner">
           <img
             class="photo"
             src="assets/kevin-ohara-profile-gemini.PNG"
             alt="Kevin O'Hara"
-            onerror="this.style.display='none'; document.getElementById('photoWrap').classList.add('initials')"
+            onerror="this.style.display='none'; this.closest('.photo-wrap').classList.add('initials')"
           />
           <span class="initials-text">KO</span>
         </div>
@@ -300,23 +299,6 @@
       <p class="mantra">Keeping things simple. And fun.</p>
     </div>
   </main>
-  <script>
-    const wrap = document.getElementById('photoWrap');
 
-wrap.addEventListener('mousemove', (e) => {
-  const rect = wrap.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-  const dx = (e.clientX - cx) / (rect.width / 2);
-  const dy = (e.clientY - cy) / (rect.height / 2);
-  const tiltX = dy * -8;
-  const tiltY = dx * 8;
-  wrap.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.04)`;
-});
-
-wrap.addEventListener('mouseleave', () => {
-  wrap.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-});
-  </script>
 </body>
 </html>
