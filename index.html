@@ -36,10 +36,12 @@
       background: var(--bg);
       font-family: 'DM Sans', sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       padding: 24px;
+      gap: 16px;
     }
 
     .page {
@@ -78,6 +80,10 @@
       to { transform: rotate(360deg); }
     }
 
+    @keyframes counter-spin {
+      to { transform: rotate(-360deg); }
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -101,6 +107,7 @@
       border-radius: 50%;
       overflow: hidden;
       background: var(--card);
+      animation: counter-spin 8s linear infinite;
     }
 
     .photo {
@@ -230,6 +237,13 @@
       letter-spacing: 0.03em;
     }
 
+    .copyright {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+
 @media (max-width: 480px) {
   body {
     padding: 0;
@@ -300,6 +314,7 @@
       <p class="mantra">Keeping things simple. And fun.</p>
     </div>
   </main>
+  <p class="copyright">© 2026 Kevin O'Hara</p>
 
 </body>
 </html>
